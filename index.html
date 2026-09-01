@@ -156,7 +156,9 @@
       </div>
     </div>
     <h2>Question bank</h2>
+    <p class="muted small">Tap <strong>All</strong>, then <strong>Expand all</strong> to read every answer. Questions start closed.</p>
     <input id="search" type="search" placeholder="Search questions or answers" />
+    <div id="actions" class="pills"></div>
     <div id="pills" class="pills"></div>
     <p id="shown" class="muted small"></p>
     <div id="list"></div>
@@ -185,7 +187,7 @@
     };
     const qas = DATA.qas;
     document.getElementById("qcount").textContent = String(qas.length);
-    let filter = "techlead";
+    let filter = "all";
     let query = "";
     function isMust(item) {
       return item.likelihood === "Almost certain" || item.likelihood === "Very likely";
@@ -224,6 +226,16 @@
     const pills = document.getElementById("pills");
     const list = document.getElementById("list");
     const shown = document.getElementById("shown");
+    const actions = document.getElementById("actions");
+    [["expand", "Expand all"], ["collapse", "Collapse all"]].forEach(([id, label]) => {
+      const b = document.createElement("button");
+      b.className = "pill";
+      b.textContent = label;
+      b.onclick = () => {
+        list.querySelectorAll("details").forEach((el) => { el.open = id === "expand"; });
+      };
+      actions.appendChild(b);
+    });
     const c = counts();
     for (const f of DATA.filters) {
       const b = document.createElement("button");
